@@ -13,7 +13,7 @@ function WorkoutCard({ workout, onDelete, onComplete, onUpdate }) {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:4000/workouts/completeWorkoutStatus/${workout._id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/workouts/completeWorkoutStatus/${workout._id}`,
         {
           method: 'PATCH',
           headers: {
@@ -39,7 +39,7 @@ function WorkoutCard({ workout, onDelete, onComplete, onUpdate }) {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:4000/workouts/updateWorkout/${workout._id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/workouts/updateWorkout/${workout._id}`,
         {
           method: 'PATCH',
           headers: {

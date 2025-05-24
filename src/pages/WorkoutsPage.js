@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import WorkoutCard from '../components/Workouts/WorkoutCard';
 import AddWorkoutModal from '../components/Workouts/AddWorkoutModal';
 import { Button, Container, Row, Col, Spinner, Alert, Card } from 'react-bootstrap';
@@ -9,13 +8,13 @@ function WorkoutsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const { user } = useAuth();
+ 
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:4000/workouts/getMyWorkouts', {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/workouts/getMyWorkouts`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -41,7 +40,7 @@ function WorkoutsPage() {
   const handleAddWorkout = async (workoutData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/workouts/addWorkout', {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/workouts/addWorkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +69,7 @@ function WorkoutsPage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:4000/workouts/completeWorkoutStatus/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/workouts/completeWorkoutStatus/${id}`,
         {
           method: 'PATCH',
           headers: {
@@ -97,7 +96,7 @@ function WorkoutsPage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:4000/workouts/deleteWorkout/${id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/workouts/deleteWorkout/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -118,6 +117,14 @@ function WorkoutsPage() {
     }
   };
 
+  const handleUpdateWorkout = (id, updatedWorkout) => {
+    setWorkouts(prevWorkouts => 
+      prevWorkouts.map(w => 
+        w._id === id ? { ...w, ...updatedWorkout } : w
+      )
+    );
+  };
+
   if (loading) return (
     <Container className="text-center py-5">
       <Spinner animation="border" role="status" variant="primary">
@@ -131,14 +138,6 @@ function WorkoutsPage() {
       <Alert variant="danger">{error}</Alert>
     </Container>
   );
-
-  const handleUpdateWorkout = (id, updatedWorkout) => {
-    setWorkouts(prevWorkouts => 
-      prevWorkouts.map(w => 
-        w._id === id ? { ...w, ...updatedWorkout } : w
-      )
-    );
-  };
 
   return (
     <Container className="py-4">
@@ -174,7 +173,7 @@ function WorkoutsPage() {
                 workout={workout} 
                 onDelete={handleDeleteWorkout}
                 onComplete={handleCompleteWorkout}
-                onUpdate={handleUpdateWorkout} // Add this prop
+                onUpdate={handleUpdateWorkout}
               />
             </Col>
           ))}
