@@ -78,7 +78,7 @@ function Register() {
   return (
     <Container className="py-5">
       <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
+        <Col xs={10} md={12} lg={10}>
           <Card className="shadow border-0">
             <Card.Body className="p-4 p-md-5">
               <h2 className="text-center mb-4">Sign Up & Get Started</h2>
@@ -148,7 +148,7 @@ function Register() {
                     name="mobileNo"
                     value={formData.mobileNo}
                     onChange={handleChange}
-                    placeholder="12345678901"
+                    placeholder="09123456789"
                     pattern="[0-9]{11}"
                   />
                   <Form.Text className="text-muted">
@@ -163,7 +163,7 @@ function Register() {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="At least 6 characters"
+                    placeholder="At least 8 characters"
                     required
                     minLength={6}
                   />
